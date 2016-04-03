@@ -7,7 +7,7 @@ credential, written in PHP and JavaScript.
 Dependencies
 ------------
 
-Server-side, the only dependencies are on PHP anod its OpenSSL extension.
+Server-side, the only dependencies are on PHP and its OpenSSL extension.
 
 Client-side, the only known FIDO 2.0 implementation is the Windows Hello
 authenticator in Microsoft Edge.
@@ -21,7 +21,6 @@ Two workflows are defined: credential creation and assertion validation.
 
 1. Instantiate an instance of the `Phido2\Phido2` class on the server. It
 takes two arguments: the site's display and server names.
-
 ```php
 $phido2 = new Phido2\Phido2('My Home Page', 'example.com');
 ```
@@ -30,13 +29,11 @@ $phido2 = new Phido2\Phido2('My Home Page', 'example.com');
 object. It takes two arguments: the user's account name, and an optional
 list of existing credentials known to belong to the user; and returns
 a JSON string.
-
 ```php
 $params = $phido2->getParams('user');
 ```
 
 3. Cause the Phido2.js script to be loaded into the browser.
-
 ```php
 print('<script src="path/to/Phido2.js" />');
 ```
