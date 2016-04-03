@@ -20,42 +20,44 @@ Two workflows are defined: credential creation and assertion validation.
 ### Initialization ###
 
 1. Instantiate an instance of the `Phido2\Phido2` class on the server. It
-takes two arguments: the site's display and server names.
-```php
-$phido2 = new Phido2\Phido2('My Home Page', 'example.com');
-```
+ takes two arguments: the site's display and server names.
 
-2. Generate request parameters using the `getParams` method of the Phido2
-object. It takes two arguments: the user's account name, and an optional
-list of existing credentials known to belong to the user; and returns
-a JSON string.
-```php
-$params = $phido2->getParams('user');
-```
+    ```php
+    $phido2 = new Phido2\Phido2('My Home Page', 'example.com');
+    ```
+ 
+2. Generate request parameters using the `getParams` method of the Phido2 object. It takes two arguments: the user's account name, and an optional
+ list of existing credentials known to belong to the user; and returns
+ a JSON string.
+
+    ```php
+    $params = $phido2->getParams('user');
+    ```
 
 3. Cause the Phido2.js script to be loaded into the browser.
-```php
-print('<script src="path/to/Phido2.js" />');
-```
+
+    ```php
+    print('<script src="path/to/Phido2.js" />');
+    ```
 
 4. Provide the request parameters to the browser.
 
-```php
-print('<script>'
-	. sprintf("var params = %s;", $params)
-	. '</script');
-```
+    ```php
+    print('<script>'
+    	. sprintf("var params = %s;", $params)
+    	. '</script');
+    ```
 
 5. Construct a callback for returning the request's response to the server,
 provide it to the browser.
 
-```javascript
-function callback(response)
-{
-	document.getElementById('response-input').value = response;
-	document.getElementById('response-form').submit();
-}
-```
+    ```javascript
+    function callback(response)
+    {
+    	document.getElementById('response-input').value = response;
+    	document.getElementById('response-form').submit();
+    }
+    ```
 
 ### Credential Creation ###
 
