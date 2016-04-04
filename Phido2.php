@@ -6,21 +6,28 @@ namespace Phido2;
 
 class Phido2 
 {
-    public function __construct($rpDisplayName, $rpServer)
+    public function __construct($rpDisplayName, $rpServer, $imageUriCb = null)
     {
         $this->rpDisplayName = $rpDisplayName;
         $this->rpServer = $rpServer;
+        if (isset($imageUriCb)) {
+            $this->imageUriCb = $imageUriCb;
+        }
     }
 
     public function getParams($user, $existing = [])
     {
-        return json_encode(array(
+        $result = array(
             'rpDisplayName' => $this->rpDisplayName,
             'userDisplayName' => $user,
             'accountName' => $user . '@' . $this->rpServer,
             'challenge' => base64_encode(openssl_random_pseudo_bytes(20)),
             'existing' => $existing
-        ));
+        );
+        if (isset($this->imageUriCb)) {
+            $result['imageUri'] = call_user_func($this->imageUriCb, $user);
+        }
+        return json_encode($result);
     }
 
     public function validateCredential($paramJs, $credential)
@@ -54,6 +61,19 @@ class Phido2
 
         if (0 != strcmp($assertionChallenge, $paramChallenge)) {
             throw new Exception('assertion challenge incorrect');
+        }
+        
+        if (isset($params->existing)) {
+            $found = false;
+            foreach ($params->existing as $cred) {
+                if (0 == strcmp($cred->id, $assertion->id)) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                throw new Exception('assertion signed with unknown credentials');
+            }
         }
 
         $signedData = $aData . hash('sha256', $cData, true);
