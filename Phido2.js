@@ -53,6 +53,7 @@ var Phido2 = {
 		rpDisplayName: params.rpDisplayName,
 		userDisplayName: params.userDisplayName,
 		accountName: params.accountName,
+		imageUri: params.imageUri
 	};
 	return this.fidoAPI.makeCredential(
 			user, cryptoParams, params.challenge,
